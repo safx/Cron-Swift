@@ -1,0 +1,11 @@
+language: objective-c
+osx_image: xcode7.1
+
+script:
+- xcrun simctl list
+- set -o pipefail
+- xcodebuild -project Cronexpr.xcodeproj -scheme Cronexpr test -sdk macosx10.11
+#- pod lib lint --quick
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
