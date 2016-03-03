@@ -30,7 +30,7 @@ extension DatePattern {
     func dayOfMonthPattern(month month: Int, year: Int) -> NumberSet {
         precondition(1...12 ~= month)
         let dayValue  = (try? dayOfMonth.toDayOfMonthPattern(month: month, year: year, hash: hash)) ?? .None
-        let weekValue = (try? dayOfWeek.toWeekOfDayPattern(month: month, year: year, hash: hash)) ?? .None
+        let weekValue = (try? dayOfWeek.toDayOfWeekPattern(month: month, year: year, hash: hash)) ?? .None
         return .And(dayValue, weekValue)
     }
     func monthPattern() -> NumberSet {

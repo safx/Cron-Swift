@@ -104,7 +104,7 @@ extension FieldPattern {
         return .And(v, .Range(1, 12))
     }
 
-    internal func toWeekOfDayPattern(month month: Int, year: Int, hash: Int64) throws -> NumberSet {
+    internal func toDayOfWeekPattern(month month: Int, year: Int, hash: Int64) throws -> NumberSet {
         precondition(1...12 ~= month)
         let nDays = lastDayOfMonth(month: month, year: year)
         func getDoWDays(dw: DayOfWeek) -> [Int] {
@@ -113,7 +113,7 @@ extension FieldPattern {
         return try getPattern { (e) -> NumberSet in
             switch e {
             case .Any:
-                return .Range(0, 6)
+                return .Range(1, nDays)
             case let .LastDayOfWeek(dw):
                 if let e = getDoWDays(dw).last {
                     return .Number(e)
