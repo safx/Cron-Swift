@@ -7,7 +7,7 @@
 //
 
 
-func parseExpression(expr: String, hash: Int64 = 0) throws -> DatePattern {
+public func parseExpression(expr: String, hash: Int64 = 0) throws -> DatePattern {
     let fields = expr.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                      .filter { $0.characters.count > 0 }
 

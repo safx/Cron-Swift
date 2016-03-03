@@ -20,9 +20,18 @@ class CronexprTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
+    func toDate(date: String) -> NSDate {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        if let newDate = dateFormatter.dateFromString(date) {
+            return newDate
+        }
+        fatalError()
+    }
+
     func testCronJob() {
-        let expectation = expectationWithDescription("Job will execute in 3 seconds")
+        let expectation = expectationWithDescription("Job will execute within 3 seconds")
 
         _ = try! CronJob(pattern: "* * * * * * *") { () -> Void in
             expectation.fulfill()
@@ -31,6 +40,15 @@ class CronexprTests: XCTestCase {
         waitForExpectationsWithTimeout(3) { (error) in
             XCTAssertNil(error, "\(error)")
         }
+    }
+
+    func testCronJob2() {
+        let pattern = try! parseExpression("10 13 20 9 3 ? *", hash: 0)
+        let currentDate = toDate("2016-03-02 09:08:07")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-03-09 20:13:10"))
+        XCTAssertEqual(generator.next(), toDate("2017-03-09 20:13:10"))
+        XCTAssertEqual(generator.next(), toDate("2018-03-09 20:13:10"))
     }
 
 }
