@@ -70,7 +70,7 @@ extension FieldPattern {
             return (1...nDays).filter{ isWorkday(getDayOfWeek(day: $0, month: month, year: year)) }
         }
 
-        return try getPattern { (e) -> NumberSet in
+        return try getPattern { e in
             switch e {
             case .Any:
                 return .Range(1, nDays)
@@ -87,18 +87,16 @@ extension FieldPattern {
                 }
                 return .None
             default:
-                assertionFailure("Unexpected day pattern: \(e)") // TODO: throw
-                return .None
+                return nil
             }
         }
     }
     
     internal func toMonthPattern() throws -> NumberSet {
-        let v = try getPattern { (e) -> NumberSet in
+        let v = try getPattern { e in
             switch e {
             case .Any: return .Range(1, 12)
-            default:
-                throw InternalError.ParseError
+            default:   return nil
             }
         }
         return .And(v, .Range(1, 12))
@@ -110,7 +108,7 @@ extension FieldPattern {
         func getDoWDays(dw: DayOfWeek) -> [Int] {
             return (1...nDays).filter{ getDayOfWeek(day: $0, month: month, year: year) == dw }
         }
-        return try getPattern { (e) -> NumberSet in
+        return try getPattern { e in
             switch e {
             case .Any:
                 return .Range(1, nDays)
@@ -124,19 +122,22 @@ extension FieldPattern {
                     return .Number(e)
                 }
                 return .None
-            default:
-                assertionFailure("Unexpected day-of-week pattern: \(e)") // TODO: throw
+            case .Number(let dw):
+                if let e = getDoWDays(DayOfWeek(rawValue: dw)!).first {
+                    return .Step(e, 7)
+                }
                 return .None
+            default:
+                return nil
             }
         }
     }
 
     internal func toYearPattern() throws -> NumberSet {
-        return try getPattern { (e) -> NumberSet in
+        return try getPattern { e in
             switch e {
             case .Any: return .Any
-            default:
-                throw InternalError.ParseError
+            default:   return  nil
             }
         }
     }
@@ -144,7 +145,7 @@ extension FieldPattern {
     // MARK: inner imprementation
 
     internal func getRangedPattern(max max: Int, hash: Int64) throws -> NumberSet {
-        let v = try getPattern { (e) -> NumberSet in
+        let v = try getPattern { e in
             switch e {
             case .Any: return .Range(0, max - 1)
             case .Hash: return .Number(Int(hash % Int64(max)))
@@ -154,14 +155,19 @@ extension FieldPattern {
                 }
                 return .Number(Int(hash % Int64(e - b) + b))
             default:
-                throw InternalError.ParseError
+                return nil
             }
         }
         return .And(v, .Range(0, max - 1))
     }
 
 
-    internal func getPattern(closure: (FieldPattern) throws -> NumberSet) throws -> NumberSet {
+    internal func getPattern(closure: (FieldPattern) -> NumberSet?) throws -> NumberSet {
+        if let result = closure(self) {
+            return result
+        }
+
+        // default behaviors
         switch self {
         case Number(let num):
             return .Number(num)
@@ -192,8 +198,8 @@ extension FieldPattern {
                 .reduce(head) { (a, e) -> NumberSet in
                     return .Or(a, e)
             }
-            // others are dynamic and should be resolved.
-        default: return try closure(self)
+        default:
+            throw InternalError.ParseError
         }
     }
 

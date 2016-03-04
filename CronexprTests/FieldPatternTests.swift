@@ -24,9 +24,9 @@ class FieldPatternTests: XCTestCase {
     func testGetPattern() {
         func t(f: FieldPattern) -> NumberSet {
             do {
-                return try f.getPattern({ (e) -> NumberSet in
-                    throw InternalError.ParseError
-                })
+                return try f.getPattern { e in
+                    return nil
+                }
             } catch {
                 XCTAssert(false)
             }
