@@ -127,6 +127,10 @@ extension FieldPattern {
                     return .Step(e, 7)
                 }
                 return .None
+            case Range(let begin, let end): // MON-FRI
+                let ret = (begin...end).reduce(.None) { NumberSet.Or($0, .Step($1, 7)) }
+                print(ret)
+                return ret
             default:
                 return nil
             }

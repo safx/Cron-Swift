@@ -128,6 +128,36 @@ class CronexprTests: XCTestCase {
         XCTAssertEqual(generator.next(), toDate("2016-04-06 12:56:34"))
     }
 
+    func testCronJobDoW2() {
+        let pattern = try! parseExpression("4 8 9 * * MON-WED 2016", hash: 0)
+        let currentDate = toDate("2016-02-08 12:57:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-02-09 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-10 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-15 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-16 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-17 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-22 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-23 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-24 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-29 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-01 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-02 09:08:04"))
+    }
+
+    func testCronJobDoW3() {
+        let pattern = try! parseExpression("4 8 9 * * MON,WED 2016", hash: 0)
+        let currentDate = toDate("2016-02-08 12:57:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-02-10 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-15 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-17 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-22 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-24 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-29 09:08:04"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-02 09:08:04"))
+    }
+
     func testCronJobLeaps() {
         let pattern = try! parseExpression("05 43 21 29 2 * *", hash: 0)
         let currentDate = toDate("1999-01-11 12:57:00")
