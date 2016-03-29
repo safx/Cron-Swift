@@ -86,4 +86,59 @@ class CronexprTests: XCTestCase {
         XCTAssertEqual(generator.next(), toDate("2016-03-11 12:00:00"))
         XCTAssertEqual(generator.next(), toDate("2016-03-18 12:00:00"))
     }
+
+    func testCronJob7() {
+        let pattern = try! parseExpression("56 34 12 31 * * 2016", hash: 0)
+        let currentDate = toDate("2016-01-01 23:59:59")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-01-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-05-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-07-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-08-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-10-31 12:34:56"))
+        XCTAssertEqual(generator.next(), toDate("2016-12-31 12:34:56"))
+        XCTAssertNil(generator.next())
+    }
+
+    func testCronJob8() {
+        let pattern = try! parseExpression("34 56 12 18 3 * 2016", hash: 0)
+        let currentDate = toDate("2016-03-02 09:08:07")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-03-18 12:56:34"))
+        XCTAssertNil(generator.next())
+    }
+
+    func testCronJob9() {
+        let pattern = try! parseExpression("34 56 12 18 3 * 2016", hash: 0)
+        let currentDate = toDate("2016-03-18 12:57:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertNil(generator.next())
+    }
+
+    func testCronJobDoW() {
+        let pattern = try! parseExpression("34 56 12 * * WED 2016", hash: 0)
+        let currentDate = toDate("2016-02-28 12:57:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-03-02 12:56:34"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-09 12:56:34"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-16 12:56:34"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-23 12:56:34"))
+        XCTAssertEqual(generator.next(), toDate("2016-03-30 12:56:34"))
+        XCTAssertEqual(generator.next(), toDate("2016-04-06 12:56:34"))
+    }
+
+    func testCronJobLeaps() {
+        let pattern = try! parseExpression("05 43 21 29 2 * *", hash: 0)
+        let currentDate = toDate("1999-01-11 12:57:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2000-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2004-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2008-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2012-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2016-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2020-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2024-02-29 21:43:05"))
+        XCTAssertEqual(generator.next(), toDate("2028-02-29 21:43:05"))
+    }
 }
