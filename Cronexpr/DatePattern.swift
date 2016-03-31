@@ -68,14 +68,42 @@ extension DatePattern {
 }
 
 extension DatePattern {
+    private func nextYMD(year: Int, month: Int?) -> (Int, Int, Int)? {
+        var y: Int = year
+        var mo: Int? = month
+        while true {
+            if let m = mo {
+                if let d = firstDay(month: m, year: y) {
+                    return (y, m, d)
+                }
+
+                mo = monthPattern().next(m)
+            } else {
+                guard let ny = yearPattern().next(y) else {
+                    return nil
+                }
+                y = ny
+                mo = firstMonth()
+            }
+        }
+        fatalError("unreachable")
+    }
+
     internal func nextYear(date: Date) -> Date? {
         guard let nextYear = yearPattern().next(date.year) else {
             return nil
         }
-        guard let firstMonth = firstMonth(), firstDay = firstDay(month: firstMonth, year: nextYear), firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+
+        guard let ymd = nextYMD(nextYear, month: firstMonth()) else {
             return nil
         }
-        return Date(year: nextYear, month: firstMonth, day: firstDay,
+
+        guard let firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+            return nil
+        }
+
+        let (y, m, d) = ymd
+        return Date(year: y, month: m, day: d,
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
@@ -84,10 +112,16 @@ extension DatePattern {
             return nextYear(date)
         }
 
-        guard let firstDay = firstDay(month: nextMonth, year: date.year), firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+        guard let ymd = nextYMD(date.year, month: nextMonth) else {
             return nil
         }
-        return Date(year: date.year, month: nextMonth, day: firstDay,
+
+        guard let firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+            return nil
+        }
+
+        let (y, m, d) = ymd
+        return Date(year: y, month: m, day: d,
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
