@@ -19,30 +19,30 @@ public struct DatePattern {
 
 extension DatePattern {
     func secondPattern() -> NumberSet {
-        return (try? second.toSecondPattern(hash)) ?? .None
+        return (try? second.toSecondPattern(hash)) ?? .none
     }
     func minutePattern() -> NumberSet {
-        return (try? minute.toMinutePattern(hash)) ?? .None
+        return (try? minute.toMinutePattern(hash)) ?? .none
     }
     func hourPattern() -> NumberSet {
-        return (try? hour.toHourPattern(hash)) ?? .None
+        return (try? hour.toHourPattern(hash)) ?? .none
     }
-    func dayOfMonthPattern(month month: Int, year: Int) -> NumberSet {
+    func dayOfMonthPattern(month: Int, year: Int) -> NumberSet {
         precondition(1...12 ~= month)
-        let dayValue  = (try? dayOfMonth.toDayOfMonthPattern(month: month, year: year, hash: hash)) ?? .None
-        let weekValue = (try? dayOfWeek.toDayOfWeekPattern(month: month, year: year, hash: hash)) ?? .None
-        return .And(dayValue, weekValue)
+        let dayValue  = (try? dayOfMonth.toDayOfMonthPattern(month: month, year: year, hash: hash)) ?? .none
+        let weekValue = (try? dayOfWeek.toDayOfWeekPattern(month: month, year: year, hash: hash)) ?? .none
+        return .and(dayValue, weekValue)
     }
     func monthPattern() -> NumberSet {
-        return (try? self.month.toMonthPattern()) ?? .None
+        return (try? self.month.toMonthPattern()) ?? .none
     }
     func yearPattern() -> NumberSet {
-        return (try? self.year.toYearPattern()) ?? .None
+        return (try? self.year.toYearPattern()) ?? .none
     }
 }
 
 extension DatePattern {
-    func next(date: Date) -> Date? {
+    func next(_ date: Date) -> Date? {
         if !yearPattern().contains(date.year) {
             return nextYear(date)
         }
@@ -68,7 +68,7 @@ extension DatePattern {
 }
 
 extension DatePattern {
-    private func nextYMD(year: Int, month: Int?) -> (Int, Int, Int)? {
+    private func nextYMD(_ year: Int, month: Int?) -> (Int, Int, Int)? {
         var y: Int = year
         var mo: Int? = month
         while true {
@@ -89,7 +89,7 @@ extension DatePattern {
         fatalError("unreachable")
     }
 
-    internal func nextYear(date: Date) -> Date? {
+    internal func nextYear(_ date: Date) -> Date? {
         guard let nextYear = yearPattern().next(date.year) else {
             return nil
         }
@@ -98,7 +98,7 @@ extension DatePattern {
             return nil
         }
 
-        guard let firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+        guard let firstHour = firstHour(), let firstMinute = firstMinute(), let firstSecond = firstSecond() else {
             return nil
         }
 
@@ -107,7 +107,7 @@ extension DatePattern {
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextMonth(date: Date) -> Date? {
+    internal func nextMonth(_ date: Date) -> Date? {
         guard let nextMonth = monthPattern().next(date.month) else {
             return nextYear(date)
         }
@@ -116,7 +116,7 @@ extension DatePattern {
             return nil
         }
 
-        guard let firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+        guard let firstHour = firstHour(), let firstMinute = firstMinute(), let firstSecond = firstSecond() else {
             return nil
         }
 
@@ -125,29 +125,29 @@ extension DatePattern {
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextDay(date: Date) -> Date? {
+    internal func nextDay(_ date: Date) -> Date? {
         guard let nextDay = dayOfMonthPattern(month: date.month, year: date.year).next(date.day) else {
             return nextMonth(date)
         }
-        guard let firstHour = firstHour(), firstMinute = firstMinute(), firstSecond = firstSecond() else {
+        guard let firstHour = firstHour(), let firstMinute = firstMinute(), let firstSecond = firstSecond() else {
             return nil
         }
         return Date(year: date.year, month: date.month, day: nextDay,
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextHour(date: Date) -> Date? {
+    internal func nextHour(_ date: Date) -> Date? {
         guard let nextHour = hourPattern().next(date.hour) else {
             return nextDay(date)
         }
-        guard let firstMinute = firstMinute(), firstSecond = firstSecond() else {
+        guard let firstMinute = firstMinute(), let firstSecond = firstSecond() else {
             return nil
         }
         return Date(year: date.year, month: date.month, day: date.day,
             hour: nextHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextMinute(date: Date) -> Date? {
+    internal func nextMinute(_ date: Date) -> Date? {
         guard let nextMinute = minutePattern().next(date.minute) else {
             return nextHour(date)
         }
@@ -158,7 +158,7 @@ extension DatePattern {
             hour: date.hour, minute: nextMinute, second: firstSecond)
     }
 
-    internal func nextSecond(date: Date) -> Date? {
+    internal func nextSecond(_ date: Date) -> Date? {
         guard let nextSecond = secondPattern().next(date.second) else {
             return nextMinute(date)
         }
@@ -168,19 +168,19 @@ extension DatePattern {
 }
 
 extension DatePattern {
-    private func firstMonth() -> Int? {
+    fileprivate func firstMonth() -> Int? {
         return monthPattern().next(0)
     }
-    private func firstDay(month month: Int, year: Int) -> Int? {
+    fileprivate func firstDay(month: Int, year: Int) -> Int? {
         return dayOfMonthPattern(month: month, year: year).next(0)
     }
-    private func firstHour() -> Int? {
+    fileprivate func firstHour() -> Int? {
         return hourPattern().next(-1)
     }
-    private func firstMinute() -> Int? {
+    fileprivate func firstMinute() -> Int? {
         return minutePattern().next(-1)
     }
-    private func firstSecond() -> Int? {
+    fileprivate func firstSecond() -> Int? {
         return secondPattern().next(-1)
     }
 }

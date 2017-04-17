@@ -6,11 +6,19 @@
 //  Copyright © 2015年 Safx Developers. All rights reserved.
 //
 
+#if os(Linux)
+import Dispatch
+#endif
+
+import Foundation
+
+public typealias NSDate = Foundation.Date
+
 public struct CronJob {
     let pattern: DatePattern
     let job: () -> Void
 
-    public init(pattern: String, hash: Int64 = 0, job: () -> Void) throws {
+    public init(pattern: String, hash: Int64 = 0, job: @escaping () -> Void) throws {
         self.pattern = try parseExpression(pattern, hash: hash)
         self.job = job
 
@@ -27,7 +35,8 @@ public struct CronJob {
 
         let interval = next.timeIntervalSinceNow
         print(next, interval)
-        dispatch_after(dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(USEC_PER_SEC * UInt64(1000.0 * interval))), dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: .now() + interval) { () -> () in
+        // dispatch_after(dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(USEC_PER_SEC * UInt64(1000.0 * interval))), dispatch_get_main_queue()) { () -> Void in
             self.job()
             self.start()
         }

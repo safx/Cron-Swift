@@ -22,7 +22,7 @@ public struct DateGenerator {
     }
 }
 
-extension DateGenerator: GeneratorType {
+extension DateGenerator: IteratorProtocol {
     public typealias Element = NSDate
 
     mutating public func next() -> Element? {

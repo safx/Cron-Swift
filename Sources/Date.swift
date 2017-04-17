@@ -5,6 +5,7 @@
 //  Created by Safx Developer on 2015/11/21.
 //  Copyright © 2015年 Safx Developers. All rights reserved.
 //
+import Foundation
 
 internal struct Date {
     let year     : Int
@@ -17,14 +18,13 @@ internal struct Date {
 
 extension Date {
     init(date: NSDate) {
-        let unit: NSCalendarUnit = [.Year, .Month, .Day, .Hour, .Minute, .Second]
-        let d = NSCalendar.currentCalendar().components(unit, fromDate: date)
-        self.year   = d.year
-        self.month  = d.month
-        self.day    = d.day
-        self.hour   = d.hour
-        self.minute = d.minute
-        self.second = d.second
+        let calendar = Calendar.current
+        self.year   = calendar.component(.year, from: date)
+        self.month  = calendar.component(.month, from: date)
+        self.day    = calendar.component(.day, from: date)
+        self.hour   = calendar.component(.hour, from: date)
+        self.minute = calendar.component(.minute, from: date)
+        self.second = calendar.component(.second, from: date)
     }
 }
 
@@ -37,6 +37,6 @@ extension Date {
         d.hour   = self.hour
         d.minute = self.minute
         d.second = self.second
-        return NSCalendar.currentCalendar().dateFromComponents(d)
+        return d.date!
     }
 }
