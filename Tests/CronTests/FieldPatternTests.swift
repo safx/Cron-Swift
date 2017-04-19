@@ -7,8 +7,7 @@
 //
 
 import XCTest
-@testable import Cronexpr
-
+@testable import Cron
 
 class FieldPatternTests: XCTestCase {
     
@@ -22,7 +21,7 @@ class FieldPatternTests: XCTestCase {
     }
 
     func testGetPattern() {
-        func t(f: FieldPattern) -> NumberSet {
+        func t(_ f: FieldPattern) -> NumberSet {
             do {
                 return try f.getPattern { e in
                     return nil
@@ -33,16 +32,16 @@ class FieldPatternTests: XCTestCase {
             fatalError("Unreachable")
         }
 
-        func c(f: FieldPattern) -> [Int] {
-            let t = t(f)
-            return (0...59).filter { t.contains($0) }
+        func c(_ f: FieldPattern) -> [Int] {
+            let tVar = t(f)
+            return (0...59).filter { tVar.contains($0) }
         }
 
-        XCTAssertEqual(NumberSet.Or(.And(.Range(0,20), .Step(0,10)), .Number(57)), t(.Or([.Step(.Range(0, 20), 10), .Number(57)])))
+        XCTAssertEqual(NumberSet.or(.and(.range(0,20), .step(0,10)), .number(57)), t(.or([.step(.range(0, 20), 10), .number(57)])))
 
-        XCTAssertEqual([0,10,20, 57], c(.Or([.Step(.Range(0, 20), 10), .Number(57)])))
-        XCTAssertEqual([5, 15, 57], c(.Or([.Step(.Range(5, 20), 10), .Number(57)])))
-        XCTAssertEqual([7, 11, 33, 55], c(.Or([.Step(.Number(11), 22), .Number(7)])))
+        XCTAssertEqual([0,10,20, 57], c(.or([.step(.range(0, 20), 10), .number(57)])))
+        XCTAssertEqual([5, 15, 57], c(.or([.step(.range(5, 20), 10), .number(57)])))
+        XCTAssertEqual([7, 11, 33, 55], c(.or([.step(.number(11), 22), .number(7)])))
     }
     
 }

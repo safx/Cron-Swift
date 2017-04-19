@@ -7,8 +7,7 @@
 //
 
 import XCTest
-@testable import Cronexpr
-
+@testable import Cron
 
 class UtilTests: XCTestCase {
 
@@ -23,15 +22,15 @@ class UtilTests: XCTestCase {
     }
 
     func testGetDayOfWeek() {
-        XCTAssertEqual(DayOfWeek.Thursday, getDayOfWeek(day: 8, month: 10, year: 2015))
-        XCTAssertEqual(DayOfWeek.Sunday, getDayOfWeek(day: 4, month: 1, year: 2015))
-        XCTAssertEqual(DayOfWeek.Saturday, getDayOfWeek(day: 1, month: 1, year: 2000))
-        XCTAssertEqual(DayOfWeek.Wednesday, getDayOfWeek(day: 1, month: 3, year: 2000))
+        XCTAssertEqual(DayOfWeek.thursday, getDayOfWeek(day: 8, month: 10, year: 2015))
+        XCTAssertEqual(DayOfWeek.sunday, getDayOfWeek(day: 4, month: 1, year: 2015))
+        XCTAssertEqual(DayOfWeek.saturday, getDayOfWeek(day: 1, month: 1, year: 2000))
+        XCTAssertEqual(DayOfWeek.wednesday, getDayOfWeek(day: 1, month: 3, year: 2000))
     }
 
     func testLastDayOfMonth() {
-        XCTAssertEqual(29, lastDayOfMonth(month: 2, year: 2000))
-        XCTAssertEqual(31, lastDayOfMonth(month: 1, year: 2000))
-        XCTAssertEqual(28, lastDayOfMonth(month: 2, year: 2001))
+        XCTAssertEqual(29, getLastDayOfMonth(month: 2, year: 2000))
+        XCTAssertEqual(31, getLastDayOfMonth(month: 1, year: 2000))
+        XCTAssertEqual(28, getLastDayOfMonth(month: 2, year: 2001))
     }
 }

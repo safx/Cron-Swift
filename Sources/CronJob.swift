@@ -12,8 +12,6 @@ import Dispatch
 
 import Foundation
 
-public typealias NSDate = Foundation.Date
-
 public struct CronJob {
     let pattern: DatePattern
     let job: () -> Void
@@ -26,7 +24,7 @@ public struct CronJob {
     }
 
     public func start() {
-        let date = Date(date: NSDate())
+        let date = Cron.Date(date: Foundation.Date())
 
         guard let next = pattern.next(date)?.date else {
             print("none")
@@ -36,7 +34,6 @@ public struct CronJob {
         let interval = next.timeIntervalSinceNow
         print(next, interval)
         DispatchQueue.main.asyncAfter(deadline: .now() + interval) { () -> () in
-        // dispatch_after(dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(USEC_PER_SEC * UInt64(1000.0 * interval))), dispatch_get_main_queue()) { () -> Void in
             self.job()
             self.start()
         }

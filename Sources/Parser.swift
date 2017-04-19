@@ -36,13 +36,14 @@ public func parseExpression(_ expr: String, hash: Int64 = 0) throws -> DatePatte
         hash       : hash)
 }
 
-func parseField(string: String) throws -> [FieldPattern] {
+func parseField(_ string: String) throws -> [FieldPattern] {
     return try string.components(separatedBy: ",")
                      .map(lex)
                      .map(parseFieldPattern)
 }
 
-internal func parseFieldPattern(ts: [Token]) throws -> FieldPattern {
+@discardableResult
+internal func parseFieldPattern(_ ts: [Token]) throws -> FieldPattern {
     guard let first = ts.first else { throw InternalError.parseError }
     guard let second: Token = ts.count > 1 ? ts[1] : nil else {
         switch (first) {
@@ -130,7 +131,8 @@ internal func parseFieldPattern(ts: [Token]) throws -> FieldPattern {
     throw InternalError.parseError
 }
 
-internal func lex(entry: String) throws -> [Token] {
+@discardableResult
+internal func lex(_ entry: String) throws -> [Token] {
     func lexNum(_ es: [Character], n: Int = 0) throws -> [Token] {
         guard let e = es.first else {
             return []

@@ -7,9 +7,11 @@
 //
 
 import XCTest
-@testable import Cronexpr
+@testable import Cron
 
-class CronexprTests: XCTestCase {
+typealias NSDate = Foundation.Date
+
+class CronTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -21,24 +23,28 @@ class CronexprTests: XCTestCase {
         super.tearDown()
     }
 
-    func toDate(date: String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
+    func toDate(_ date: String) -> NSDate {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        if let newDate = dateFormatter.dateFromString(date) {
+        if let newDate = dateFormatter.date(from: date) {
             return newDate
         }
         fatalError()
     }
 
     func testCronJob() {
-        let expectation = expectationWithDescription("Job will execute within 3 seconds")
+        let expect = expectation(description: "Job will execute within 3 seconds")
 
-        _ = try! CronJob(pattern: "* * * * * * *") { () -> Void in
-            expectation.fulfill()
+        do {
+            _ = try CronJob(pattern: "* * * * * * *") { () -> Void in
+                expect.fulfill()
+            }
+        } catch {
+            print(error)
         }
 
-        waitForExpectationsWithTimeout(3) { (error) in
-            XCTAssertNil(error, "\(error)")
+        waitForExpectations(timeout: 3) { (error) in
+            XCTAssertNil(error, String(describing: error))
         }
     }
 

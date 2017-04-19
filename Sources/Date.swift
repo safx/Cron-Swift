@@ -5,6 +5,7 @@
 //  Created by Safx Developer on 2015/11/21.
 //  Copyright © 2015年 Safx Developers. All rights reserved.
 //
+
 import Foundation
 
 internal struct Date {
@@ -16,8 +17,8 @@ internal struct Date {
     let second   : Int
 }
 
-extension Date {
-    init(date: NSDate) {
+extension Cron.Date {
+    init(date: Foundation.Date) {
         let calendar = Calendar.current
         self.year   = calendar.component(.year, from: date)
         self.month  = calendar.component(.month, from: date)
@@ -28,15 +29,16 @@ extension Date {
     }
 }
 
-extension Date {
-    var date: NSDate? {
+extension Cron.Date {
+    var date: Foundation.Date? {
         let d = NSDateComponents()
+        d.calendar = NSCalendar.current
         d.year   = self.year
         d.month  = self.month
         d.day    = self.day
         d.hour   = self.hour
         d.minute = self.minute
         d.second = self.second
-        return d.date!
+        return d.date
     }
 }

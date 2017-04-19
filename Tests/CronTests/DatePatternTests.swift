@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Cronexpr
+@testable import Cron
 
 class DatePatternTests: XCTestCase {
 
