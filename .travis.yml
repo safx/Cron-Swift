@@ -11,5 +11,3 @@ script:
   - swift build
   - swift build -c release
   - swift test
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t "57875442-466c-4330-80e7-4a5e3cef6f5b"
