@@ -1,11 +1,22 @@
 # Cron for Swift
 
-[![TravisCI](http://img.shields.io/travis/safx/Cron-Swift.svg?style=flat)](https://travis-ci.org/safx/Cron-Swift)
-[![codecov.io](https://codecov.io/github/safx/Cron-Swift/coverage.svg?branch=master)](https://codecov.io/github/safx/Cron-Swift?branch=master)
+[![TravisCI](http://img.shields.io/travis/Ponyboy47/Cron-Swift.svg?style=flat)](https://travis-ci.org/Ponyboy47/Cron-Swift)
+[![codecov.io](https://codecov.io/github/safx/Cron-Swift/coverage.svg?branch=master)](https://codecov.io/github/Ponyboy47/Cron-Swift?branch=master)
+
+## Installation
+
+### Swift Package Manager
+
+Add the following line to your `Package.swift` file
+```swift
+.Package(url: "https://github.com/Ponyboy47/Cron-Swift.git", majorVersion: 1, minor: 0)
+```
 
 ## Usage
 
-```Swift
+```swift
+import Cron
+
 let job = try? CronJob(pattern: "*/10 * * * * *") { () -> Void in
     print("job executes every 10 seconds")
 }
