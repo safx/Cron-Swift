@@ -4,10 +4,12 @@ os:
 osx_image: xcode8.3
 dist: trusty
 sudo: required
-language: generic
+language: swift
 install:
   - eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
 script:
   - swift build
   - swift build -c release
   - swift test
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t "57875442-466c-4330-80e7-4a5e3cef6f5b"
