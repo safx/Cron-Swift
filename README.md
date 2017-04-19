@@ -1,7 +1,6 @@
 # Cron for Swift
 
 [![TravisCI](http://img.shields.io/travis/Ponyboy47/Cron-Swift.svg?style=flat)](https://travis-ci.org/Ponyboy47/Cron-Swift)
-[![codecov.io](https://codecov.io/github/safx/Cron-Swift/coverage.svg?branch=master)](https://codecov.io/github/Ponyboy47/Cron-Swift?branch=master)
 
 ## Installation
 
