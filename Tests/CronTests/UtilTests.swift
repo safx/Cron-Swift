@@ -34,3 +34,14 @@ class UtilTests: XCTestCase {
         XCTAssertEqual(28, getLastDayOfMonth(month: 2, year: 2001))
     }
 }
+
+#if os(Linux)
+extension UtilTests {
+    static var allTests: [(String, (UtilTests) -> () throws -> Void)] {
+        return [
+            ("testGetDayOfWeek", testGetDayOfWeek),
+            ("testLastDayOfMonth", testLastDayOfMonth)
+        ]
+    }
+}
+#endif

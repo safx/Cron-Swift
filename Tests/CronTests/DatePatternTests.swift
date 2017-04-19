@@ -22,3 +22,12 @@ class DatePatternTests: XCTestCase {
     }
 
 }
+
+#if os(Linux)
+extension DatePatternTests {
+    static var allTests: [(String, (DatePatternTests) -> () throws -> Void)] {
+        return [
+        ]
+    }
+}
+#endif

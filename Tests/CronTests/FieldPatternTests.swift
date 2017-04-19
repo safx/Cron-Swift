@@ -45,3 +45,13 @@ class FieldPatternTests: XCTestCase {
     }
     
 }
+
+#if os(Linux)
+extension FieldPatternTests {
+    static var allTests: [(String, (FieldPatternTests) -> () throws -> Void)] {
+        return [
+            ("testGetPattern", testGetPattern)
+        ]
+    }
+}
+#endif

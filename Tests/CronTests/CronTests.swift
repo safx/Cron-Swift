@@ -218,3 +218,28 @@ class CronTests: XCTestCase {
         XCTAssertEqual(generator.next(), toDate("2028-02-29 21:43:05"))
     }
 }
+
+#if os(Linux)
+extension CronTests {
+    static var allTests: [(String, (CronTests) -> () throws -> Void)] {
+        return [
+            ("testCronJob", testCronJob),
+            ("testCronJob2", testCronJob2),
+            ("testCronJob3", testCronJob3),
+            ("testCronJob4", testCronJob4),
+            ("testCronJob5", testCronJob5),
+            ("testCronJob6", testCronJob6),
+            ("testCronJob7", testCronJob7),
+            ("testCronJob8", testCronJob8),
+            ("testCronJob9", testCronJob9),
+            ("testCronJob10", testCronJob10),
+            ("testCronJob11", testCronJob11),
+            ("testCronJobDoW", testCronJobDoW),
+            ("testCronJobDoW2", testCronJobDoW2),
+            ("testCronJobDoW3", testCronJobDoW3),
+            ("testCronJobDoW4", testCronJobDoW4),
+            ("testCronJobLeaps", testCronJobLeaps)
+        ]
+    }
+}
+#endif

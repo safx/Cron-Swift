@@ -187,3 +187,15 @@ extension Cron.Date: Equatable {}
 public func == (lhs: Cron.Date, rhs: Cron.Date) -> Bool {
     return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day && lhs.hour == rhs.hour && lhs.minute == rhs.minute && lhs.second == rhs.second
 }
+
+#if os(Linux)
+extension ParserTests {
+    static var allTests: [(String, (ParserTests) -> () throws -> Void)] {
+        return [
+            ("testParseExpression", testParseExpression),
+            ("testLex", testLex),
+            ("testParseFieldPattern", testParseFieldPattern)
+        ]
+    }
+}
+#endif

@@ -189,3 +189,25 @@ class NumberSetTests: XCTestCase {
     }
 
 }
+
+#if os(Linux)
+extension NumberSetTests {
+    static var allTests: [(String, (NumberSetTests) -> () throws -> Void)] {
+        return [
+            ("test_contains_any", test_contains_any),
+            ("test_contains_set", test_contains_set),
+            ("test_contains_range", test_contains_range),
+            ("test_contains_range2", test_contains_range2),
+            ("test_contains_repeat", test_contains_repeat),
+            ("test_contains_and", test_contains_and),
+            ("test_contains_or", test_contains_or),
+            ("test_next_any", test_next_any),
+            ("test_next_set", test_next_set),
+            ("test_next_range", test_next_range),
+            ("test_next_repeat", test_next_repeat),
+            ("test_next_and", test_next_and),
+            ("test_next_or", test_next_or)
+        ]
+    }
+}
+#endif
