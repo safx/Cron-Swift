@@ -17,7 +17,7 @@ public struct Date {
     let second   : Int
 }
 
-extension Cron.Date {
+public extension Cron.Date {
     init(date: Foundation.Date) {
         let calendar = Calendar.current
         self.year   = calendar.component(.year, from: date)
@@ -33,7 +33,7 @@ extension Cron.Date {
     }
 }
 
-extension Cron.Date {
+public extension Cron.Date {
     var date: Foundation.Date? {
         let d = NSDateComponents()
         d.calendar = NSCalendar.current
