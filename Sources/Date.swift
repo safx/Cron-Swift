@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal struct Date {
+public struct Date {
     let year     : Int
     let month    : Int
     let day      : Int
@@ -26,6 +26,10 @@ extension Cron.Date {
         self.hour   = calendar.component(.hour, from: date)
         self.minute = calendar.component(.minute, from: date)
         self.second = calendar.component(.second, from: date)
+    }
+
+    init() {
+        self.init(date: Foundation.Date())
     }
 }
 
