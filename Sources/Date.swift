@@ -9,12 +9,12 @@
 import Foundation
 
 public struct Date {
-    let year     : Int
-    let month    : Int
-    let day      : Int
-    let hour     : Int
-    let minute   : Int
-    let second   : Int
+    public let year     : Int
+    public let month    : Int
+    public let day      : Int
+    public let hour     : Int
+    public let minute   : Int
+    public let second   : Int
 }
 
 public extension Cron.Date {
