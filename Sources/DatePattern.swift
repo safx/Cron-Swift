@@ -17,31 +17,31 @@ public struct DatePattern {
     internal let hash      : Int64
 }
 
-extension DatePattern {
-    internal func secondPattern() -> NumberSet {
+internal extension DatePattern {
+    func secondPattern() -> NumberSet {
         return (try? second.toSecondPattern(hash)) ?? .none
     }
-    internal func minutePattern() -> NumberSet {
+    func minutePattern() -> NumberSet {
         return (try? minute.toMinutePattern(hash)) ?? .none
     }
-    internal func hourPattern() -> NumberSet {
+    func hourPattern() -> NumberSet {
         return (try? hour.toHourPattern(hash)) ?? .none
     }
-    internal func dayOfMonthPattern(month: Int, year: Int) -> NumberSet {
+    func dayOfMonthPattern(month: Int, year: Int) -> NumberSet {
         precondition(1...12 ~= month)
         let dayValue  = (try? dayOfMonth.toDayOfMonthPattern(month: month, year: year, hash: hash)) ?? .none
         let weekValue = (try? dayOfWeek.toDayOfWeekPattern(month: month, year: year, hash: hash)) ?? .none
         return .and(dayValue, weekValue)
     }
-    internal func monthPattern() -> NumberSet {
+    func monthPattern() -> NumberSet {
         return (try? self.month.toMonthPattern()) ?? .none
     }
-    internal func yearPattern() -> NumberSet {
+    func yearPattern() -> NumberSet {
         return (try? self.year.toYearPattern()) ?? .none
     }
 }
 
-extension DatePattern {
+public extension DatePattern {
     func next(_ date: Date) -> Date? {
         if !yearPattern().contains(date.year) {
             return nextYear(date)
@@ -67,7 +67,7 @@ extension DatePattern {
     }
 }
 
-extension DatePattern {
+internal extension DatePattern {
     private func nextYMD(_ year: Int, month: Int?) -> (Int, Int, Int)? {
         var y: Int = year
         var mo: Int? = month
@@ -89,7 +89,7 @@ extension DatePattern {
         fatalError("unreachable")
     }
 
-    internal func nextYear(_ date: Date) -> Date? {
+    func nextYear(_ date: Date) -> Date? {
         guard let nextYear = yearPattern().next(date.year) else {
             return nil
         }
@@ -107,7 +107,7 @@ extension DatePattern {
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextMonth(_ date: Date) -> Date? {
+    func nextMonth(_ date: Date) -> Date? {
         guard let nextMonth = monthPattern().next(date.month) else {
             return nextYear(date)
         }
@@ -125,7 +125,7 @@ extension DatePattern {
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextDay(_ date: Date) -> Date? {
+    func nextDay(_ date: Date) -> Date? {
         guard let nextDay = dayOfMonthPattern(month: date.month, year: date.year).next(date.day) else {
             return nextMonth(date)
         }
@@ -136,7 +136,7 @@ extension DatePattern {
             hour: firstHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextHour(_ date: Date) -> Date? {
+    func nextHour(_ date: Date) -> Date? {
         guard let nextHour = hourPattern().next(date.hour) else {
             return nextDay(date)
         }
@@ -147,7 +147,7 @@ extension DatePattern {
             hour: nextHour, minute: firstMinute, second: firstSecond)
     }
 
-    internal func nextMinute(_ date: Date) -> Date? {
+    func nextMinute(_ date: Date) -> Date? {
         guard let nextMinute = minutePattern().next(date.minute) else {
             return nextHour(date)
         }
@@ -158,7 +158,7 @@ extension DatePattern {
             hour: date.hour, minute: nextMinute, second: firstSecond)
     }
 
-    internal func nextSecond(_ date: Date) -> Date? {
+    func nextSecond(_ date: Date) -> Date? {
         guard let nextSecond = secondPattern().next(date.second) else {
             return nextMinute(date)
         }
@@ -167,20 +167,20 @@ extension DatePattern {
     }
 }
 
-extension DatePattern {
-    fileprivate func firstMonth() -> Int? {
+fileprivate extension DatePattern {
+    func firstMonth() -> Int? {
         return monthPattern().next(0)
     }
-    fileprivate func firstDay(month: Int, year: Int) -> Int? {
+    func firstDay(month: Int, year: Int) -> Int? {
         return dayOfMonthPattern(month: month, year: year).next(0)
     }
-    fileprivate func firstHour() -> Int? {
+    func firstHour() -> Int? {
         return hourPattern().next(-1)
     }
-    fileprivate func firstMinute() -> Int? {
+    func firstMinute() -> Int? {
         return minutePattern().next(-1)
     }
-    fileprivate func firstSecond() -> Int? {
+    func firstSecond() -> Int? {
         return secondPattern().next(-1)
     }
 }
