@@ -7,36 +7,36 @@
 //
 
 public struct DatePattern {
-    let second    : FieldPattern
-    let minute    : FieldPattern
-    let hour      : FieldPattern
-    let dayOfMonth: FieldPattern
-    let month     : FieldPattern
-    let dayOfWeek : FieldPattern
-    let year      : FieldPattern
-    let hash      : Int64
+    internal let second    : FieldPattern
+    internal let minute    : FieldPattern
+    internal let hour      : FieldPattern
+    internal let dayOfMonth: FieldPattern
+    internal let month     : FieldPattern
+    internal let dayOfWeek : FieldPattern
+    internal let year      : FieldPattern
+    internal let hash      : Int64
 }
 
 extension DatePattern {
-    func secondPattern() -> NumberSet {
+    internal func secondPattern() -> NumberSet {
         return (try? second.toSecondPattern(hash)) ?? .none
     }
-    func minutePattern() -> NumberSet {
+    internal func minutePattern() -> NumberSet {
         return (try? minute.toMinutePattern(hash)) ?? .none
     }
-    func hourPattern() -> NumberSet {
+    internal func hourPattern() -> NumberSet {
         return (try? hour.toHourPattern(hash)) ?? .none
     }
-    func dayOfMonthPattern(month: Int, year: Int) -> NumberSet {
+    internal func dayOfMonthPattern(month: Int, year: Int) -> NumberSet {
         precondition(1...12 ~= month)
         let dayValue  = (try? dayOfMonth.toDayOfMonthPattern(month: month, year: year, hash: hash)) ?? .none
         let weekValue = (try? dayOfWeek.toDayOfWeekPattern(month: month, year: year, hash: hash)) ?? .none
         return .and(dayValue, weekValue)
     }
-    func monthPattern() -> NumberSet {
+    internal func monthPattern() -> NumberSet {
         return (try? self.month.toMonthPattern()) ?? .none
     }
-    func yearPattern() -> NumberSet {
+    internal func yearPattern() -> NumberSet {
         return (try? self.year.toYearPattern()) ?? .none
     }
 }
