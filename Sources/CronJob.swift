@@ -13,7 +13,7 @@ import Dispatch
 import Foundation
 
 public struct CronJob {
-    let pattern: DatePattern
+    public let pattern: DatePattern
     let job: () -> Void
 
     public init(pattern: String, hash: Int64 = 0, job: @escaping () -> Void) throws {
