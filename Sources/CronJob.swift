@@ -6,9 +6,7 @@
 //  Copyright © 2015年 Safx Developers. All rights reserved.
 //
 
-#if os(Linux)
 import Dispatch
-#endif
 
 public struct CronJob {
     public let pattern: DatePattern
@@ -16,7 +14,7 @@ public struct CronJob {
     let queue: DispatchQueue
 
     public init(pattern: String, hash: Int64 = 0, job: @escaping () -> Void) throws {
-        self.pattern = try parseExpression(pattern, hash: hash)
+        self.pattern = try DatePattern(pattern, hash: hash)
         self.job = job
         self.queue = DispatchQueue.main
 
@@ -24,7 +22,7 @@ public struct CronJob {
     }
 
     public init(pattern: String, queue: DispatchQueue, hash: Int64 = 0, job: @escaping () -> Void) throws {
-        self.pattern = try parseExpression(pattern, hash: hash)
+        self.pattern = try DatePattern(pattern, hash: hash)
         self.job = job
         self.queue = queue
 

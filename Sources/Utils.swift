@@ -61,3 +61,31 @@ internal func getDayOfWeek(day: Int, month: Int, year: Int) -> DayOfWeek {
     assert(0...6 ~= d)
     return DayOfWeek(rawValue: d)!
 }
+
+enum CronFieldType {
+    case number
+    case range
+    case step
+    case composited
+}
+
+internal enum NumberType {
+    case raw
+    case doW
+    case month
+}
+
+internal enum Token {
+    case number(Int, NumberType)
+    case wildcard
+    case slash
+    case hyphen
+    case numberSign
+    case openParen
+    case closeParen
+    case h
+    case l
+    case w
+    case lW
+    case end
+}

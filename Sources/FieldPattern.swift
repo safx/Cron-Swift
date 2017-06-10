@@ -221,10 +221,3 @@ extension FieldPattern {
         }
     }
 }
-
-enum CronFieldType {
-    case number
-    case range
-    case step
-    case composited
-}
