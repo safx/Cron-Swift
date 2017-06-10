@@ -152,6 +152,15 @@ class CronTests: XCTestCase {
         XCTAssertNil(generator.next())
     }
 
+    func testCronJob12() {
+        let pattern = try! parseExpression("0 8 * * *", hash: 0)
+        let currentDate = toDate("2016-06-09 18:15:00")
+        var generator = DateGenerator(pattern: pattern, hash: 0, date: currentDate)
+        XCTAssertEqual(generator.next(), toDate("2016-06-10 08:00:00"))
+        XCTAssertEqual(generator.next(), toDate("2016-06-11 08:00:00"))
+        XCTAssertEqual(generator.next(), toDate("2016-06-12 08:00:00"))
+    }
+
     func testCronJobDoW() {
         let pattern = try! parseExpression("34 56 12 * * WED 2016", hash: 0)
         let currentDate = toDate("2016-02-28 12:57:00")
@@ -234,6 +243,7 @@ extension CronTests {
             ("testCronJob9", testCronJob9),
             ("testCronJob10", testCronJob10),
             ("testCronJob11", testCronJob11),
+            ("testCronJob12", testCronJob12),
             ("testCronJobDoW", testCronJobDoW),
             ("testCronJobDoW2", testCronJobDoW2),
             ("testCronJobDoW3", testCronJobDoW3),

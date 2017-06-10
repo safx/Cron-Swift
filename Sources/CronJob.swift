@@ -15,10 +15,20 @@ import Foundation
 public struct CronJob {
     public let pattern: DatePattern
     let job: () -> Void
+    let queue: DispatchQueue
 
     public init(pattern: String, hash: Int64 = 0, job: @escaping () -> Void) throws {
         self.pattern = try parseExpression(pattern, hash: hash)
         self.job = job
+        self.queue = DispatchQueue.main
+
+        start()
+    }
+
+    public init(pattern: String, queue: DispatchQueue, hash: Int64 = 0, job: @escaping () -> Void) throws {
+        self.pattern = try parseExpression(pattern, hash: hash)
+        self.job = job
+        self.queue = queue
 
         start()
     }
@@ -27,13 +37,12 @@ public struct CronJob {
         let date = Cron.Date(date: Foundation.Date())
 
         guard let next = pattern.next(date)?.date else {
-            print("none")
+            print("No next execution date could be determined")
             return
         }
 
         let interval = next.timeIntervalSinceNow
-        print(next, interval)
-        DispatchQueue.main.asyncAfter(deadline: .now() + interval) { () -> () in
+        queue.asyncAfter(deadline: .now() + interval) { () -> () in
             self.job()
             self.start()
         }
