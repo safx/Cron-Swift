@@ -42,6 +42,18 @@ internal extension DatePattern {
 }
 
 public extension DatePattern {
+    public init(string: String) throws {
+        let p = try parseExpression(string)
+        self.second = p.second
+        self.minute = p.minute
+        self.hour = p.hour
+        self.dayOfMonth = p.dayOfMonth
+        self.month = p.month
+        self.dayOfWeek = p.dayOfWeek
+        self.year = p.year
+        self.hash = p.hash
+    }
+
     func next(_ date: Date = Date()) -> Date? {
         if !yearPattern().contains(date.year) {
             return nextYear(date)
