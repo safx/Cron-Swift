@@ -42,7 +42,7 @@ internal extension DatePattern {
 }
 
 public extension DatePattern {
-    func next(_ date: Date) -> Date? {
+    func next(_ date: Date = Date()) -> Date? {
         if !yearPattern().contains(date.year) {
             return nextYear(date)
         }

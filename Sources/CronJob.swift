@@ -10,8 +10,6 @@
 import Dispatch
 #endif
 
-import Foundation
-
 public struct CronJob {
     public let pattern: DatePattern
     let job: () -> Void
@@ -33,10 +31,24 @@ public struct CronJob {
         start()
     }
 
-    public func start() {
-        let date = Cron.Date(date: Foundation.Date())
+    public init(pattern: DatePattern, hash: Int64 = 0, job: @escaping () -> Void) {
+        self.pattern = pattern
+        self.job = job
+        self.queue = DispatchQueue.main
 
-        guard let next = pattern.next(date)?.date else {
+        start()
+    }
+
+    public init(pattern: DatePattern, queue: DispatchQueue, hash: Int64 = 0, job: @escaping () -> Void) {
+        self.pattern = pattern
+        self.job = job
+        self.queue = queue
+
+        start()
+    }
+
+    public func start() {
+        guard let next = pattern.next()?.date else {
             print("No next execution date could be determined")
             return
         }
