@@ -7,14 +7,14 @@
 //
 
 public struct DatePattern {
-    internal let second    : FieldPattern
-    internal let minute    : FieldPattern
-    internal let hour      : FieldPattern
-    internal let dayOfMonth: FieldPattern
-    internal let month     : FieldPattern
-    internal let dayOfWeek : FieldPattern
-    internal let year      : FieldPattern
-    internal let hash      : Int64
+    let second    : FieldPattern
+    let minute    : FieldPattern
+    let hour      : FieldPattern
+    let dayOfMonth: FieldPattern
+    let month     : FieldPattern
+    let dayOfWeek : FieldPattern
+    let year      : FieldPattern
+    let hash      : Int64
 }
 
 internal extension DatePattern {
