@@ -14,7 +14,7 @@ enum InternalError: Error {
 }
 
 
-internal enum DayOfWeek: Int {
+public enum DayOfWeek: Int {
     case sunday = 0
     case monday = 1
     case tuesday = 2
@@ -62,7 +62,7 @@ internal func getDayOfWeek(day: Int, month: Int, year: Int) -> DayOfWeek {
     return DayOfWeek(rawValue: d)!
 }
 
-enum CronFieldType {
+public enum CronFieldType {
     case number
     case range
     case step

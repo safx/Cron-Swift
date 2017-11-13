@@ -6,9 +6,9 @@
 //  Copyright © 2015年 Safx Developers. All rights reserved.
 //
 
-typealias CronNumberType = Int
+public typealias CronNumberType = Int
 
-enum FieldPattern {
+public enum FieldPattern {
     case any                    // *
     case number(CronNumberType) // 4
     case hash                   // H

@@ -9,15 +9,15 @@
 import Foundation
 
 public struct DatePattern {
-    let second    : FieldPattern
-    let minute    : FieldPattern
-    let hour      : FieldPattern
-    let dayOfMonth: FieldPattern
-    let month     : FieldPattern
-    let dayOfWeek : FieldPattern
-    let year      : FieldPattern
-    let hash      : Int64
-    let string    : String
+    public let second    : FieldPattern
+    public let minute    : FieldPattern
+    public let hour      : FieldPattern
+    public let dayOfMonth: FieldPattern
+    public let month     : FieldPattern
+    public let dayOfWeek : FieldPattern
+    public let year      : FieldPattern
+    public let hash      : Int64
+    public let string    : String
 
     public init(_ expr: String, hash: Int64 = 0) throws {
         let fields = expr.components(separatedBy: CharacterSet.whitespaces)
