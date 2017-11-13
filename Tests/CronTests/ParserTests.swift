@@ -192,9 +192,9 @@ public func == (lhs: Cron.Date, rhs: Cron.Date) -> Bool {
 extension ParserTests {
     static var allTests: [(String, (ParserTests) -> () throws -> Void)] {
         return [
-            ("testParseExpression", testParseExpression),
-            ("testLex", testLex),
-            ("testParseFieldPattern", testParseFieldPattern)
+//             ("testParseExpression", testParseExpression),
+//             ("testLex", testLex),
+//             ("testParseFieldPattern", testParseFieldPattern)
         ]
     }
 }
