@@ -21,7 +21,10 @@ DerivedData
 
 # Swift Package Manager
 /Package.pins
+/Package.resolved
 /.build
 
 # Vim
 *.swp
+
+.AppleDouble
