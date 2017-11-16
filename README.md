@@ -8,8 +8,9 @@
 
 Add the following line to your `Package.swift` file
 ```swift
-.Package(url: "https://github.com/Ponyboy47/Cron-Swift.git", majorVersion: 1, minor: 0)
+.package(url: "https://github.com/Ponyboy47/Cron-Swift.git", .upToNextMinor(from: "2.1.0"))
 ```
+NOTE: Cron uses Swift 4. For Swift 3, use version 1.x
 
 ## Usage
 
