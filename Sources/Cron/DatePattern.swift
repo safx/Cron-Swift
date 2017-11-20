@@ -21,7 +21,7 @@ public struct DatePattern {
 
     public init(_ expr: String, hash: Int64 = 0) throws {
         let fields = expr.components(separatedBy: CharacterSet.whitespaces)
-            .filter { $0.characters.count > 0 }
+            .filter { $0.count > 0 }
 
         guard (5...7).contains(fields.count) else {
             throw InternalError.parseError
@@ -223,7 +223,7 @@ public struct DatePattern {
             }
         }
         
-        let es = (entry + "\0").characters.map { $0 }
+        let es = (entry + "\0").map { $0 }
         return try lexMain(es)
     }
 }
