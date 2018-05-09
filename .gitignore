@@ -25,6 +25,7 @@ DerivedData
 /.build
 
 # Vim
-*.swp
+*.sw[po]
+*.vimsession
 
 .AppleDouble

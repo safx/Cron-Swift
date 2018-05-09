@@ -15,5 +15,8 @@ let package = Package(
        .target(
            name: "Cron",
            dependencies: []),
+       .testTarget(
+           name: "CronTests",
+           dependencies: ["Cron"])
     ]
 )

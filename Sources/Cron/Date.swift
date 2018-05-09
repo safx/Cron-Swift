@@ -46,3 +46,34 @@ public extension Cron.Date {
         return d.date
     }
 }
+
+extension Cron.Date: Codable {
+    enum CodingKeys: String, CodingKey {
+        case year
+        case month
+        case day
+        case hour
+        case minute
+        case second
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        year = try values.decode(Int.self, forKey: .year)
+        month = try values.decode(Int.self, forKey: .month)
+        day = try values.decode(Int.self, forKey: .day)
+        hour = try values.decode(Int.self, forKey: .hour)
+        minute = try values.decode(Int.self, forKey: .minute)
+        second = try values.decode(Int.self, forKey: .second)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(year, forKey: .year)
+        try container.encode(month, forKey: .month)
+        try container.encode(day, forKey: .day)
+        try container.encode(hour, forKey: .hour)
+        try container.encode(minute, forKey: .minute)
+        try container.encode(second, forKey: .second)
+    }
+}
