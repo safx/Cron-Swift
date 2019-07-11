@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Cronexpr
+@testable import Cron
 
 class DatePatternTests: XCTestCase {
 
@@ -22,3 +22,12 @@ class DatePatternTests: XCTestCase {
     }
 
 }
+
+#if os(Linux)
+extension DatePatternTests {
+    static var allTests: [(String, (DatePatternTests) -> () throws -> Void)] {
+        return [
+        ]
+    }
+}
+#endif
