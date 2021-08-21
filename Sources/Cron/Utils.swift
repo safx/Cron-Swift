@@ -62,20 +62,20 @@ internal func getDayOfWeek(day: Int, month: Int, year: Int) -> DayOfWeek {
     return DayOfWeek(rawValue: d)!
 }
 
-public enum CronFieldType {
+public enum CronFieldType: Equatable {
     case number
     case range
     case step
     case composited
 }
 
-internal enum NumberType {
+internal enum NumberType: Equatable {
     case raw
     case doW
     case month
 }
 
-internal enum Token {
+internal enum Token: Equatable {
     case number(Int, NumberType)
     case wildcard
     case slash

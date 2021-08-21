@@ -8,7 +8,7 @@
 
 public typealias CronNumberType = Int
 
-public enum FieldPattern {
+public enum FieldPattern: Equatable {
     case any                    // *
     case number(CronNumberType) // 4
     case hash                   // H
@@ -85,7 +85,7 @@ extension FieldPattern {
                 if let e = getWorkDays().dropFirst(n).first {
                     return .number(e)
                 }
-                return .none
+                return NumberSet.none
             default:
                 return nil
             }
@@ -121,12 +121,12 @@ extension FieldPattern {
                 if let e = getDoWDays(dw).dropFirst(n).first {
                     return .number(e)
                 }
-                return .none
+                return NumberSet.none
             case .number(let dw):
                 if let e = getDoWDays(DayOfWeek(rawValue: dw)!).first {
                     return .step(e, 7)
                 }
-                return .none
+                return NumberSet.none
             case .range(let begin, let end): // MON-FRI
                 let ret = (begin...end).reduce(.none) { NumberSet.or($0, .step($1, 7)) }
                 print(ret)
@@ -155,7 +155,7 @@ extension FieldPattern {
             case .hash: return .number(Int(hash % Int64(max)))
             case .rangedHash(let b, let e):
                 guard b < e else {
-                    return .none
+                    return NumberSet.none
                 }
                 return .number(Int(Int64(hash) % Int64(e - b) + Int64(b)))
             default:
