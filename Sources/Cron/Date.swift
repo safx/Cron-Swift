@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Date {
+public struct CronDate: Equatable {
     public let year     : Int
     public let month    : Int
     public let day      : Int
@@ -17,7 +17,7 @@ public struct Date {
     public let second   : Int
 }
 
-public extension Cron.Date {
+public extension CronDate {
     init(date: Foundation.Date) {
         let calendar = Calendar.current
         self.year   = calendar.component(.year, from: date)
@@ -33,7 +33,7 @@ public extension Cron.Date {
     }
 }
 
-public extension Cron.Date {
+public extension CronDate {
     var date: Foundation.Date? {
         let d = NSDateComponents()
         d.calendar = NSCalendar.current
@@ -47,7 +47,7 @@ public extension Cron.Date {
     }
 }
 
-extension Cron.Date: Codable {
+extension CronDate: Codable {
     enum CodingKeys: String, CodingKey {
         case year
         case month
